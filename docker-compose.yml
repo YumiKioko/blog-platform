@@ -1,0 +1,80 @@
+﻿services:
+  frontend:
+    build: ./src/frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - auth-service
+      - posts-service
+    environment:
+      - REACT_APP_AUTH_URL=http://auth-service:3000
+      - REACT_APP_POSTS_URL=http://posts-service:3000
+
+  auth-service:
+    build: ./src/auth-service
+    ports:
+      - "3001:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/auth
+      - JWT_SECRET=your_jwt_secret_here_change_in_production
+      - PORT=3000
+    depends_on:
+      - mongodb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  posts-service:
+    build: ./src/posts-service
+    ports:
+      - "3002:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/posts
+      - REDIS_URI=redis://redis:6379
+      - PORT=3000
+    depends_on:
+      - mongodb
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  analytics-service:
+    build: ./src/analytics-service
+    ports:
+      - "3003:5000"
+    environment:
+      - REDIS_URI=redis://redis:6379
+      - PORT=5000
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mongodb:
+    image: mongo:5
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongodb_data:
+  redis_data:

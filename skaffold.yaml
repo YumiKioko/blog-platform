@@ -1,0 +1,27 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: blog-platform
+build:
+  artifacts:
+  - image: frontend
+    context: src/frontend
+  - image: auth-service
+    context: src/auth-service
+  - image: posts-service
+    context: src/posts-service
+  - image: analytics-service
+    context: src/analytics-service
+deploy:
+  kubectl:
+    manifests:
+    - infra/k8s/namespace.yaml
+    - infra/k8s/configmap.yaml
+    - infra/k8s/secret.yaml
+    - infra/k8s/mongodb.yaml
+    - infra/k8s/redis.yaml
+    - infra/k8s/ingress.yaml
+    - src/auth-service/k8s/deployment.yaml
+    - src/posts-service/k8s/deployment.yaml
+    - src/analytics-service/k8s/deployment.yaml
+    - src/frontend/k8s/deployment.yaml
