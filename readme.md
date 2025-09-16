@@ -1,4 +1,3 @@
-I'll create a complete README.md file for you. Here's the full markdown content:
 
 ```markdown
 # Blog Platform - Microservices Architecture
@@ -383,9 +382,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 **Note**: Remember to change the JWT secret in production and use proper environment variable management for sensitive data.
-
-For questions or support, please open an issue in the GitHub repository.
-"@ | Set-Content -Path .\README.md -Encoding UTF8
-```
-
-This will create a comprehensive README.md file that includes everything developers need to know about your project!
