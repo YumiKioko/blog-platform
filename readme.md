@@ -1,11 +1,11 @@
 ```markdown
-## 🚀 Getting Started
+#Getting Started
 
-### Prerequisites
+##Prerequisites
 - Docker and Docker Compose installed on your system
 - Git (to clone the repository)
 
-### Installation & Running
+## Installation & Running
 
 1. **Clone the repository**
    ```bash
